@@ -3,6 +3,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var passport = require('passport');
+var ejs = require('ejs');
 var beerController = require('./controllers/beer');
 var userController = require('./controllers/user');
 var authController = require('./controllers/auth');
@@ -13,6 +14,9 @@ mongoose.connect('mongodb://localhost:27017/beerlocker');
 
 // Create our Express application
 var app = express();
+
+// Set view engine to ejs
+app.set('view engine', 'ejs');
 
 // Use the body-parser package in our application
 app.use(bodyParser.urlencoded({
