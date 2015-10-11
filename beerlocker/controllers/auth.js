@@ -64,5 +64,5 @@ passport.use(new BearerStrategy(
 ));
 
 exports.isBearerAuthenticated = passport.authenticate('bearer', { session: false });
-exports.isAuthenticated = passport.authenticate('basic', { session : false });
+exports.isAuthenticated = passport.authenticate(['basic', 'bearer'], { session : false });
 exports.isClientAuthenticated = passport.authenticate('client-basic', { session : false });
