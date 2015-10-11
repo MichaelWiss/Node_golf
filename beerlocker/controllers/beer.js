@@ -1,77 +1,3 @@
-
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
 // Load required packages
 var Beer = require('../models/beer');
 
@@ -84,6 +10,7 @@ exports.postBeers = function(req, res) {
   beer.name = req.body.name;
   beer.type = req.body.type;
   beer.quantity = req.body.quantity;
+  beer.userId = req.user._id;
 
   // Save the beer and check for errors
   beer.save(function(err) {
@@ -97,7 +24,7 @@ exports.postBeers = function(req, res) {
 // Create endpoint /api/beers for GET
 exports.getBeers = function(req, res) {
   // Use the Beer model to find all beer
-  Beer.find(function(err, beers) {
+  Beer.find({ userId: req.user._id },function(err, beers) {
     if (err)
       res.send(err);
 
@@ -108,7 +35,7 @@ exports.getBeers = function(req, res) {
 // Create endpoint /api/beers/:beer_id for GET
 exports.getBeer = function(req, res) {
   // Use the Beer model to find a specific beer
-  Beer.findById(req.params.beer_id, function(err, beer) {
+  Beer.find({ userId: req.user._id, _id: req.params.beer_id }, function(err, beer) {
     if (err)
       res.send(err);
 
@@ -119,7 +46,7 @@ exports.getBeer = function(req, res) {
 // Create endpoint /api/beers/:beer_id for PUT
 exports.putBeer = function(req, res) {
   // Use the Beer model to find a specific beer
-  Beer.findById(req.params.beer_id, function(err, beer) {
+  Beer.findById({ userId: req.user._id, _id: req.params.beer_id }, function(err, beer) {
     if (err)
       res.send(err);
 
@@ -139,7 +66,7 @@ exports.putBeer = function(req, res) {
 // Create endpoint /api/beers/:beer_id for DELETE
 exports.deleteBeer = function(req, res) {
   // Use the Beer model to find a specific beer and remove it
-  Beer.findByIdAndRemove(req.params.beer_id, function(err) {
+  Beer.remove({ userId: req.user._id, _id: req.params.beer_id }, function(err) {
     if (err)
       res.send(err);
 
